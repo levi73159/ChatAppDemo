@@ -8,6 +8,9 @@
              <ResourceDictionary.MergedDictionaries>
                  <ResourceDictionary Source="./Themes/ContractCard.xaml"/>
                  <ResourceDictionary Source="./Themes/ChatItem.xaml"/>
+                 <ResourceDictionary Source="./Themes/MessageBox.xaml"/>
+                 <ResourceDictionary Source="./Themes/StylesScrolBar.xaml"/>
+                 <ResourceDictionary Source="./Themes/Button.xaml"/>
              </ResourceDictionary.MergedDictionaries>
          </ResourceDictionary>
     </Application.Resources>

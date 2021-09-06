@@ -1,76 +1,108 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using MessageAppDemo.Core;
 using MessageAppDemo.MVVM.Model;
 
 namespace MessageAppDemo.MVVM.ViewModel
 {
-	public class MainViewModel
+	public class MainViewModel : ObservableObject
 	{
-		public ObservableCollection<MessageModel> Messages { get; set; }
+		public ObservableCollection<MessageModel> Messages
+		{
+			get { return SelectedContact.Messages; }
+			set { SelectedContact.Messages = value; }
+		}
+
 		public ObservableCollection<ContractModel> Contracts { get; set; }
+		public List<UserModel> Users { get; set; }
+
+		private UserModel _currentUser;
+
+		public UserModel CurrentUser
+		{
+			get { return _currentUser; }
+			set
+			{
+				_currentUser = value;
+				OnPropertyChanged();
+			}
+		}
+
+		
+
+		//Commands
+		public RelayCommand SendCommand { get; set; }
+
+		private ContractModel _selectedContact;
+
+		public ContractModel SelectedContact
+		{
+			get { return _selectedContact; }
+			set
+			{
+				_selectedContact = value;
+				OnPropertyChanged();
+			}
+		}
+
+		private string _message;
+
+		public string Message
+		{
+			get { return _message; }
+			set
+			{
+				_message = value;
+				OnPropertyChanged();
+			}
+		}
 
 		public MainViewModel()
 		{
-			Messages = new ObservableCollection<MessageModel>();
 			Contracts = new ObservableCollection<ContractModel>();
-			
-			Messages.Add(new MessageModel
+			SendCommand = new RelayCommand(delegate(object o)
 			{
-				Username = "Allison",
-				UsernameColor = "#409aff",
-				ImageSource = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png",
-				Message = "Test",
-				Time = DateTime.Now,
-				IsNativeOrigin = false,
-				FirstMessage = true
-			});
-
-			for (int i = 0; i < 3; i++)
-			{
-				Messages.Add(new MessageModel
+				SelectedContact.Messages.Add(new MessageModel
 				{
-					Username = "Allison",
-					UsernameColor = "#409aff",
-					ImageSource = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png",
-					Message = "Test",
-					Time = DateTime.Now,
-					IsNativeOrigin = false,
-					FirstMessage = false
-				});
-			}
-			
-			for (int i = 0; i < 4; i++)
-			{
-				Messages.Add(new MessageModel
-				{
-					Username = "Alison",
-					UsernameColor = "#0fdbff",
-					ImageSource = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png",
-					Message = "Love You",
-					Time = DateTime.Now,
+					Message = Message,
+					FirstMessage = true,
+					UsernameColor = "Green",
 					IsNativeOrigin = true,
+					Username = CurrentUser.Username,
+					ImageSource = CurrentUser.ImageSource,
+					Time = DateTime.Now
 				});
-			}
-			
-			Messages.Add(new MessageModel
+
+				Message = "";
+			}, o =>
 			{
-				Username = "Alison",
-				UsernameColor = "#0fdbff",
-				ImageSource = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png",
-				Message = "Last",
-				Time = DateTime.Now,
-				IsNativeOrigin = true,
+				if (SelectedContact == null) return false;
+				return !string.IsNullOrWhiteSpace(Message);
 			});
 
 			for (int i = 0; i < 5; i++)
 			{
-				Contracts.Add(new ContractModel
-				{
-					Username = $"Allison {i}",
-					ImageSource = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png",
-					Messages = Messages
-				});
+				Contracts.Add(new ContractModel($"Cody{i}", 
+					"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png"));
 			}
+
+			Users = UserModel.CreateUserModels(Contracts);
+			Users.Add(new UserModel("Levi", "", 
+				"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Video-Game-Controller-Icon-IDV-green.svg/249px-Video-Game-Controller-Icon-IDV-green.svg.png")
+			{
+				Status = UserStatus.Online
+			});
+			Contracts = UserModel.GetContractModels(Users);
+			CurrentUser = UserModel.LogIn("Levi", "", Users, Contracts);
+			Contracts.Remove(CurrentUser.UserContract);
+		}
+
+		public void Click()
+		{
+			if (SendCommand.CanExecute(Message)) SendCommand.Execute(Message);
 		}
 	}
 }

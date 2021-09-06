@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using MessageAppDemo.MVVM.ViewModel;
+using Microsoft.Win32;
 
 namespace MessageAppDemo
 {
@@ -35,6 +37,21 @@ namespace MessageAppDemo
 			WindowState = WindowState == WindowState.Maximized
 					? WindowState.Normal
 					: WindowState.Maximized;
+		}
+
+		private void SendButton_Click(object sender, RoutedEventArgs e)
+		{
+			((MainViewModel) DataContext).Click();
+		}
+
+		private void MoreButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var openFileDialog = new OpenFileDialog();
+
+			if (openFileDialog.ShowDialog() == true)
+			{
+				
+			}
 		}
 	}
 }

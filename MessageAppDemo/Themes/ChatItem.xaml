@@ -48,7 +48,7 @@
         
         <Style.Triggers>
             <DataTrigger Binding="{Binding FirstMessage}" Value="False">
-            <Setter Property="Template" Value="{StaticResource CostumeRow}"/>
+                <Setter Property="Template" Value="{StaticResource CostumeRow}"/>
             </DataTrigger>
         </Style.Triggers>
         

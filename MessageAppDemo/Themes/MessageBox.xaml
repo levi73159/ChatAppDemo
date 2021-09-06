@@ -14,7 +14,8 @@
                             <TextBox VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"
-                                     Name="MessageBox"
+                                     x:Name="MessageBox"
+                                     Background="Transparent"
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
                                      Foreground="Gray"
@@ -37,7 +38,7 @@
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text, ElementName=MessageBox}" Value="">
-                                                
+                                                <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

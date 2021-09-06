@@ -58,18 +58,24 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Include="Core\ObservableObject.cs" />
+        <Compile Include="Core\RelayCommand.cs" />
         <Compile Include="MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Themes\Button.xaml" />
         <Page Include="Themes\ChatItem.xaml" />
         <Page Include="Themes\ContractCard.xaml" />
         <Page Include="Themes\MessageBox.xaml" />
+        <Page Include="Themes\StylesScrolBar.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="MVVM\Model\ContractModel.cs" />
         <Compile Include="MVVM\Model\MessageModel.cs" />
+        <Compile Include="MVVM\Model\UserModel.cs" />
         <Compile Include="MVVM\ViewModel\MainViewModel.cs" />
+        <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>
         </Compile>
@@ -87,18 +93,21 @@
         <None Include="App.config" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Core" />
       <Folder Include="MVVM\View" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Icons\send.png" />
+      <Content Include="Icons\send.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="Icons\phone.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="Icons\camera.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="Icons\plus.png" />
+      <Content Include="Icons\plus.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
